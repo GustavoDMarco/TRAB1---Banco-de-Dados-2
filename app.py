@@ -74,12 +74,14 @@ else:
 if not df.empty:
     st.markdown("---")
     st.subheader("📈 Estatísticas Rápidas")
+    st.write(f"**Total de registros:** {len(df)}")
 
     if tabela_escolhida == "notificacao" and not df.empty:
-        st.write(f"**Total enviadas:** {len(df)}")
+        st.write(f"**Total de notificações enviadas:** {len(df)}")
 
     if "valor" in df.columns:
         st.metric("💰 Soma total de valores", f"R$ {df['valor'].sum():.2f}")
+
 
 if tabela_escolhida == "praia" and not df.empty:
     if "cidade" in df.columns:
