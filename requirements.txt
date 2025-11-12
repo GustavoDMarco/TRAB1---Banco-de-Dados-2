@@ -1,7 +1,8 @@
 streamlit==1.30.0
 pandas==2.2.2
 sqlalchemy
-psycopg[binary]
+psycopg2-binary
 python-dotenv==1.0.0
+
 
 
