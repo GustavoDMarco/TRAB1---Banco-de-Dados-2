@@ -76,7 +76,7 @@ if not df.empty:
     st.subheader("📈 Estatísticas Rápidas")
     st.write(f"**Total de registros:** {len(df)}")
 
-    if tabela_escolhida == "notificacao" and not df.empty:
+    if tabela_escolhida == "notificacao":
         st.write(f"**Total de notificações enviadas:** {len(df)}")
 
     if "valor" in df.columns:
