@@ -1,15 +1,19 @@
 import streamlit as st
 import pandas as pd
 from sqlalchemy import create_engine, text
-
+import os
 st.set_page_config(page_title="Sistema de Armários de Praia", layout="wide")
 
-DB_URL = "postgresql+psycopg2://neondb_owner:npg_TQRa1SWw5KlN@ep-soft-dew-aeznnvvq-pooler.c-2.us-east-2.aws.neon.tech/neondb?sslmode=require"
-engine = create_engine(DB_URL)
+DB_URL = os.getenv("DATABASE_URL", "postgresql+psycopg2://neondb_owner:npg_TQRa1SWw5KlN@ep-soft-dew-aeznnvvq-pooler.c-2.us-east-2.aws.neon.tech/neondb?sslmode=require")
+
+@st.cache_resource
+def get_engine():
+    return create_engine(DB_URL)
 
 @st.cache_data
 def carregar_tabela(tabela):
     try:
+        engine = get_engine()
         with engine.connect() as conn:
             query = text(f"SELECT * FROM {tabela}")
             df = pd.read_sql(query, conn)
@@ -77,3 +81,4 @@ if tabela_escolhida == "aluguel" and not df.empty:
     st.subheader("📊 Resumo de Aluguéis por Usuário")
     resumo = df.groupby("usuario_id")["valor"].sum().reset_index()
     st.bar_chart(resumo, x="usuario_id", y="valor")
+
