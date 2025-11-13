@@ -24,8 +24,6 @@ def carregar_tabela(tabela):
         st.error(f"Erro ao carregar {tabela}: {e}")
         return pd.DataFrame()
 
-
-# Sidebar
 st.sidebar.title("📂 Navegação")
 opcao = st.sidebar.radio(
     "Selecione uma tabela:",
@@ -50,10 +48,14 @@ tabela_escolhida = tabela_map[opcao]
 df = carregar_tabela(tabela_escolhida)
 df = df.applymap(lambda x: str(x).strip().replace("'", "") if isinstance(x, str) else x)
 
+colunas_sensiveis = ["senha", "cvv"]
+df = df.drop(columns=[c for c in colunas_sensiveis if c in df.columns])
+
 st.title(f"📊 Dados da Tabela: {opcao}")
 
 if not df.empty:
     with st.expander("🔍 Filtrar dados"):
+
         colunas = st.multiselect("Selecione colunas para filtrar", df.columns)
         filtros = {}
         for col in colunas:
@@ -70,7 +72,6 @@ if not df.empty:
 else:
     st.warning(f"Nenhum dado encontrado na tabela '{tabela_escolhida}'.")
 
-
 if not df.empty:
     st.markdown("---")
     st.subheader("📈 Estatísticas Rápidas")
@@ -83,10 +84,40 @@ if not df.empty:
     if "valor" in df.columns:
         st.metric("💰 Soma total de valores", f"R$ {df['valor'].sum():.2f}")
 
+if tabela_escolhida == "usuario" and not df.empty:
+    if "estado" in df.columns:
+        estados = df["estado"].value_counts().head(5)
+        st.write("**Top 5 Estados:**")
+        st.write(estados)
+
+if tabela_escolhida == "praia" and not df.empty:
+    if "cidade" in df.columns:
+        cidades = df["cidade"].value_counts().head(5)
+        st.write("**Top 5 Cidades:**")
+        st.write(cidades)
+
+if tabela_escolhida == "armario" and not df.empty:
+    if "status" in df.columns:
+        status_disp = df["status"].eq("Disponível").sum()
+        status_ocup = df["status"].eq("Ocupado").sum()
+        status_manut = df["status"].eq("Manutenção").sum()
+        st.write(f"Armários Disponíveis: {status_disp}")
+        st.write(f"Armários Ocupados: {status_ocup}")
+        st.write(f"Armários em Manutenção: {status_manut}")
+
 if tabela_escolhida == "aluguel" and not df.empty:
     st.markdown("---")
-    st.subheader("📊 Resumo de Aluguéis por Usuário")
+    st.write("📊 Resumo de Aluguéis por Usuário")
     st.write(df.groupby("usuario_id")["id"].count().reset_index(name="total_alugueis").sort_values(by="total_alugueis", ascending=False).head(10))
+
+if tabela_escolhida == "pagamento" and not df.empty:
+    if "status" in df.columns:
+        status_ok = df["status"].eq("Concluído").sum()
+        status_pend = df["status"].eq("Em Aberto").sum()
+        status_atrasado = df["status"].eq("Atrasado").sum()
+        st.write(f"Pagametentos Realizados: {status_ok}")
+        st.write(f"Pagamentos Pendentes: {status_pend}")
+        st.write(f"Pagamento Atrasado: {status_atrasado}")
 
 if tabela_escolhida == "notificacao" and not df.empty:
     st.markdown("---")
@@ -94,7 +125,6 @@ if tabela_escolhida == "notificacao" and not df.empty:
     if "lida" in df.columns:
         lidas = df["lida"].eq(True).sum()
         st.write(f"Notificações lidas: **{lidas}**")
-
 
 if tabela_escolhida == "avaliacao" and not df.empty:
     st.markdown("---")
