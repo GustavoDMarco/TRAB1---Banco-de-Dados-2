@@ -16,6 +16,7 @@ Pandas
 Python 3.10+
 
 🗂️ Principais Arquivos:
+
 ├── popularBD.py        # Script de leitura de Excel + inserção ordenada no banco
 
 ├── APP.py              # Dashboard Streamlit para visualização das tabelas
