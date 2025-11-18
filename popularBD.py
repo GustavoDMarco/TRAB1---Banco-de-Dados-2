@@ -1,4 +1,4 @@
-# popularBD.py — versão ajustada com correção de FK para armário
+
 import os
 import pandas as pd
 from sqlalchemy import create_engine, text, inspect
@@ -13,7 +13,6 @@ def get_engine():
         raise EnvironmentError("❌ A variável de ambiente DATABASE_URL não está definida.")
     return create_engine(DATABASE_URL, echo=False)
 
-# === 2. Correção de IDs ===
 def ajustar_ids(df, coluna_id, ids_validos):
     if coluna_id not in df.columns:
         return df
@@ -27,7 +26,6 @@ def ajustar_ids(df, coluna_id, ids_validos):
     )
     return df
 
-# === 3. Leitura das abas ===
 def load_sheets(path):
     xls = pd.ExcelFile(path)
     dfs = {}
@@ -56,7 +54,6 @@ def load_sheets(path):
 
     return dfs
 
-# === 4. População ===
 def seed():
     if not os.path.exists(EXCEL_PATH):
         raise FileNotFoundError(f"❌ Planilha não encontrada: {EXCEL_PATH}")
@@ -69,8 +66,6 @@ def seed():
     print("Tabelas encontradas:", tabelas_existentes)
 
     with engine.begin() as conn:
-
-        # === Ordem correta de inserção (respeitando FKs) ===
         ordem = [
             "usuario",
             "praia",
@@ -85,7 +80,7 @@ def seed():
             "manutencao"
         ]
 
-        # Insere cada tabela na ordem certa
+
         for tabela in ordem:
             if tabela not in dfs:
                 continue
@@ -107,3 +102,4 @@ def seed():
 # === Execução ===
 if __name__ == "__main__":
     seed()
+
