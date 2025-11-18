@@ -1,24 +1,18 @@
 🏖️ Sistema de Armários de Praia – Dashboard & População de Banco
-
 Aplicação desenvolvida para visualização, filtragem e análise das tabelas de um banco PostgreSQL, além de script automatizado para popular o banco a partir de planilhas Excel.
 
-🚀 Tecnologias Utilizadas
+🚀 DEPLOY:
+https://trankaki.streamlit.app/
+
 🔹 Back-end / Banco de Dados
-
 PostgreSQL (Neon DB)
-
 SQLAlchemy
-
 Pandas
-
 Scripts de popular tabelas (.xlsx → banco)
 
 🔹 Front-end / Dashboard
-
 Streamlit
-
 Pandas
-
 Python 3.10+
 
 🗂️ Principais Arquivos:
@@ -29,11 +23,9 @@ Python 3.10+
 1️⃣ Variável de ambiente (OBRIGATÓRIO)
 
 Crie um arquivo .env na raiz:
-
 DATABASE_URL=postgresql+psycopg2://usuario:senha@host/banco?sslmode=require
 
 🧩 Script de População – popularBD.py
-
 Esse script:
 
 ✔️ Lê automaticamente todas as abas da planilha
@@ -48,9 +40,7 @@ python popularBD.py
 O script exibirá:
 
 Tabelas detectadas
-
 Quantidade de registros inseridos por aba
-
 Alertas de erros ou colunas ignoradas
 
 📊 Dashboard – APP.py
@@ -65,27 +55,16 @@ Aplicação Web criada com Streamlit, permitindo:
 ✔️ Contagem por status (armários, pagamentos, avaliações etc.)
 
 A barra lateral permite navegar entre:
-
 Usuário
-
 Praia
-
 Armário
-
 Funcionário
-
 Cartão de Crédito
-
 Aluguel
-
 Pagamento
-
 Multa
-
 Notificação
-
 Avaliação
-
 Manutenção
 
 ▶️ Executar o Dashboard
